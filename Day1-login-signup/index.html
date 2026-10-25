@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>r
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Signup</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 2px 12px #ccc;
+    }
+
+    h2 {
+      text-align: center;
+      color: #4338ca;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+    }
+
+    button {
+      background: #4338ca;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #message {
+      color: #d00;
+      font-size: 14px;
+    }
+
+    #switch {
+      background: #e0e7ff;
+      color: #4338ca;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h2 id="heading">Sign Up</h2>
+
+    <form id="form">
+      <input type="text" id="name" placeholder="Full Name">
+
+      <input type="email" id="email" placeholder="Email" required>
+
+      <input type="password" id="password"
+             placeholder="Password" required>
+
+      <input type="password" id="confirm"
+             placeholder="Confirm Password" required>
+
+      <p id="message"></p>
+
+      <button type="submit" id="submitBtn">Sign Up</button>
+    </form>
+
+    <button type="button" id="switch">Switch to Login</button>
+  </div>
+
+  <script>
+    let signup = true;
+
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const confirm = document.getElementById("confirm");
+    const message = document.getElementById("message");
+    const form = document.getElementById("form");
+
+    document.getElementById("switch").onclick = function() {
+      signup = !signup;
+
+      document.getElementById("heading").textContent =
+        signup ? "Sign Up" : "Login";
+
+      document.getElementById("submitBtn").textContent =
+        signup ? "Sign Up" : "Login";
+
+      document.getElementById("switch").textContent =
+        signup ? "Switch to Login" : "Switch to Signup";
+
+      name.classList.toggle("hidden", !signup);
+      confirm.classList.toggle("hidden", !signup);
+
+      name.required = signup;
+      confirm.required = signup;
+
+      form.reset();
+      message.textContent = "";
+      message.style.color = "#d00";
+    };
+
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      message.style.color = "#d00";
+
+      if (signup && name.value.trim() === "") {
+        message.textContent = "Please enter your name.";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        message.textContent = "Please enter a valid email.";
+      } else if (
+        signup &&
+        (password.value.length < 8 ||
+         !/[0-9]/.test(password.value) ||
+         !/[^A-Za-z0-9]/.test(password.value))
+      ) {
+        message.textContent =
+          "Password needs 8 characters, a number and a special character.";
+      } else if (signup && password.value !== confirm.value) {
+        message.textContent = "Passwords do not match.";
+      } else {
+        message.style.color = "green";
+        message.textContent = signup
+          ? "Signup form validated successfully!"
+          : "Login form validated successfully!";
+      }
+    };
+  </script>
+</body>
+</html>
